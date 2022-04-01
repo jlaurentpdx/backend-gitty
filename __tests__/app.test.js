@@ -31,7 +31,7 @@ describe('backend-gitty routes', () => {
     expect(res.body).toEqual({
       id: expect.any(String),
       username: 'fake_github_user',
-      photo_url: expect.any(String),
+      photoUrl: expect.any(String),
       iat: expect.any(Number),
       exp: expect.any(Number),
     });
