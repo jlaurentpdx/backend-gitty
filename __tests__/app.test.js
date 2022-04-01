@@ -3,6 +3,8 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 
+jest.mock('../lib/utils/github');
+
 describe('backend-gitty routes', () => {
   beforeEach(() => {
     return setup(pool);
@@ -21,17 +23,17 @@ describe('backend-gitty routes', () => {
   });
 
   it('should login and redirect users to /api/v1/github/posts', async () => {
-    const req = await request
+    const res = await request
       .agent(app)
       .get('/api/v1/github/login/callback?code=42')
       .redirects(1);
 
-    expect(req.body).toEqual({
+    expect(res.body).toEqual({
       id: expect.any(String),
       username: 'fake_github_user',
-      photoUrl: expect.any(String),
-      iat: expect.any(String),
-      exp: expect.any(String),
+      photo_url: expect.any(String),
+      iat: expect.any(Number),
+      exp: expect.any(Number),
     });
   });
 });
