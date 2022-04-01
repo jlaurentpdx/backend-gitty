@@ -20,7 +20,7 @@ describe('backend-gitty routes', () => {
     );
   });
 
-  it('should login and redirect users to /api/v1/github/dashboard', async () => {
+  it('should login and redirect users to /api/v1/github/posts', async () => {
     const req = await request
       .agent(app)
       .get('/api/v1/github/login/callback?code=9999')
