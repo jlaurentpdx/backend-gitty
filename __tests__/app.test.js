@@ -19,4 +19,20 @@ describe('backend-gitty routes', () => {
       /https:\/\/github.com\/login\/oauth\/authorize\?client_id=[\w\d]+&scope=user&redirect_uri=http:\/\/localhost:7890\/api\/v1\/github\/login\/callback/i
     );
   });
+
+  it('should login and redirect users to /api/v1/github/dashboard', async () => {
+    const req = await request
+      .agent(app)
+      .get('/api/v1/github/login/callback?code=9999')
+      .redirects(1);
+
+    expect(req.body).toEqual({
+      id: expect.any(String),
+      username: 'fake_github_user',
+      email: 'not-real@example.com',
+      avatar: expect.any(String),
+      iat: expect.any(String),
+      exp: expect.any(String),
+    });
+  });
 });
