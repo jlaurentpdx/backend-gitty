@@ -23,14 +23,13 @@ describe('backend-gitty routes', () => {
   it('should login and redirect users to /api/v1/github/posts', async () => {
     const req = await request
       .agent(app)
-      .get('/api/v1/github/login/callback?code=9999')
+      .get('/api/v1/github/login/callback?code=42')
       .redirects(1);
 
     expect(req.body).toEqual({
       id: expect.any(String),
       username: 'fake_github_user',
-      email: 'not-real@example.com',
-      avatar: expect.any(String),
+      photoUrl: expect.any(String),
       iat: expect.any(String),
       exp: expect.any(String),
     });
