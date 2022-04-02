@@ -39,4 +39,19 @@ describe('backend-gitty routes', () => {
       ])
     );
   });
+
+  it('should logout a user on DELETE request to /api/v1/github', async () => {
+    const agent = request.agent(app);
+
+    // Log a user in
+    await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
+
+    // Return a logout message on delete
+    let res = await agent.delete('/api/v1/github');
+    expect(res.body).toEqual({ message: 'Logged out successfully' });
+
+    // Check that the user is logged out by returning an error on authenticated route
+    res = await agent.get('/api/v1/posts');
+    expect(res.status).toEqual(401);
+  });
 });
