@@ -63,23 +63,14 @@ describe('backend-gitty routes', () => {
       .redirects(1);
 
     const res = await agent.post('/api/v1/posts').send({
-      username: user.username,
+      username: user.body.username,
       text: 'another fake post. Not fun any more.',
     });
 
-    expect(res.body).toEqual(
-      expect.arrayContaining([
-        {
-          id: expect.any(String),
-          text: 'my first fake post. hooray!',
-          username: 'fake_github_user',
-        },
-        {
-          id: expect.any(String),
-          text: 'another fake post. Not fun any more.',
-          username: 'fake_github_user',
-        },
-      ])
-    );
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      text: 'another fake post. Not fun any more.',
+      username: 'fake_github_user',
+    });
   });
 });
