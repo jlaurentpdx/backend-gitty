@@ -58,12 +58,9 @@ describe('backend-gitty routes', () => {
   it('should allow authenticated users to create new posts', async () => {
     const agent = request.agent(app);
 
-    const user = await agent
-      .get('/api/v1/github/login/callback?code=42')
-      .redirects(1);
+    await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
 
     const res = await agent.post('/api/v1/posts').send({
-      username: user.body.username,
       text: 'another fake post. Not fun any more.',
     });
 
