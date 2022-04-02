@@ -50,7 +50,7 @@ describe('backend-gitty routes', () => {
     let res = await agent.delete('/api/v1/github');
     expect(res.body).toEqual({ message: 'Logged out successfully' });
 
-    // Check that the user is logged out by returning an error on authenticated route
+    // Check that the user is logged out by returning an error on authenticated GET route
     res = await agent.get('/api/v1/posts');
     expect(res.status).toEqual(401);
   });
@@ -69,5 +69,13 @@ describe('backend-gitty routes', () => {
       text: 'another fake post. Not fun any more.',
       username: 'fake_github_user',
     });
+  });
+
+  it('should return a 401 error to unauthenticated users attempting to post', async () => {
+    const res = await request(app)
+      .post('/api/v1/posts')
+      .send({ text: 'infiltrating' });
+
+    expect(res.status).toEqual(401);
   });
 });
