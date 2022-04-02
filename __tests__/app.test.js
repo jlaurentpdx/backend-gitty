@@ -22,17 +22,21 @@ describe('backend-gitty routes', () => {
     );
   });
 
-  it('should login and redirect users to /api/v1/github/posts', async () => {
-    const res = await request
-      .agent(app)
+  it('should login and redirect users to /api/v1/posts', async () => {
+    const agent = request.agent(app);
+
+    const res = await agent
       .get('/api/v1/github/login/callback?code=42')
       .redirects(1);
 
-    expect(res.body).toEqual({
-      username: 'fake_github_user',
-      photoUrl: expect.any(String),
-      iat: expect.any(Number),
-      exp: expect.any(Number),
-    });
+    expect(res.body).toEqual(
+      expect.arrayContaining([
+        {
+          id: expect.any(String),
+          text: 'my first fake post. hooray!',
+          username: 'fake_github_user',
+        },
+      ])
+    );
   });
 });
